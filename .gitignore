@@ -1,0 +1,93 @@
+# =========================
+# 🔐 ENV & SECRETS
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# 🐍 PYTHON
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# =========================
+# 📓 JUPYTER
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# 🧊 SPARK / BIG DATA TEMP
+# =========================
+spark-warehouse/
+metastore_db/
+derby.log
+
+# =========================
+# 📦 DATA FILES (IMPORTANT)
+# =========================
+data/
+*.parquet
+*.csv
+*.json
+
+# If you want to keep folder but not contents:
+# !data/.gitkeep
+
+# =========================
+# 🐳 DOCKER
+# =========================
+*.log
+docker-compose.override.yml
+
+# =========================
+# 💻 MACOS (YOU DEFINITELY NEED THIS)
+# =========================
+.DS_Store
+
+# =========================
+# 🧠 IDEs
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# 📊 EVIDENCES (optional)
+# =========================
+# Uncomment if screenshots are heavy
+# evidences/
+
+# =========================
+# 🧪 MISC
+# =========================
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# =========================
+# 🔒 SECRETS / KEYS
+# =========================
+*.pem
+*.key
+*.crt
+
+# =========================
+# 📁 LOGS
+# =========================
+logs/
+*.log
+
+# =========================
+# 📄 CACHE
+# =========================
+.cache/
