@@ -35,10 +35,10 @@ derby.log
 # =========================
 # 📦 DATA FILES (IMPORTANT)
 # =========================
-data/
-*.parquet
-*.csv
-*.json
+#data/
+#*.parquet
+#*.csv
+#*.json
 
 # If you want to keep folder but not contents:
 # !data/.gitkeep
