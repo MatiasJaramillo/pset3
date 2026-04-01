@@ -2,7 +2,7 @@
 
 ## Integrantes
 Leandro,
-Esteban Silva,
+Esteban Silva (00329204),
 Matías Jaramillo (00326063)
 
 ---
