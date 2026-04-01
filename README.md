@@ -1,7 +1,7 @@
 # Proyecto P3 – Ingesta de Datos con PySpark y Snowflake
 
 ## Integrantes
-Leandro,
+Leandro (00325644),
 Esteban Silva (00329204),
 Matías Jaramillo (00326063)
 
