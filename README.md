@@ -27,6 +27,7 @@ El objetivo es leer los datos en formato Parquet, estandarizar su esquema y carg
 ---
 
 
+
 ## Cómo Ejecutar el Proyecto
 
 1. Levantar el entorno
