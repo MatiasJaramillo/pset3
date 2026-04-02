@@ -16,4 +16,5 @@ services:
       SPARK_LOCAL_IP: 0.0.0.0
       PYSPARK_PYTHON: python
       JUPYTER_ENABLE_LAB: "yes"
+      JUPYTER_TOKEN: "123456"
     working_dir: /home/jovyan/work
