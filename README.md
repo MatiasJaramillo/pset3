@@ -74,47 +74,55 @@ El pipeline está diseñado para iterar dinámicamente en este rango analítico.
 graph TD;
     subgraph Fuentes de Datos Externas
       TLC_S3("AWS Cloudfront: NYC TLC Parquet")
-      TAXI_ZONES("Taxi Zones (CSV)")
+      TAXI_ZONES("Taxi Zones CSV/Shapefile")
     end
 
-    subgraph Plataforma Local (Jupyter / PySpark)
-      NB01("01_ingesta_parquet_raw.ipynb<br>[Extract API & Cast]")
-      NB02("02_enriquecimiento_y_unificacion.ipynb<br>[Join Dimensional]")
-      NB03("03_construccion_obt.ipynb<br>[Reglas Matemáticas de Negocio]")
-      NB04("04_validaciones_y_exploracion.ipynb<br>[Auditoría Data Quality]")
-      NB05("05_data_analysis.ipynb<br>[Análisis Empresarial Spark SQL]")
+    subgraph Plataforma Local
+      NB01("01_ingesta_parquet_raw.ipynb<br>[Scraping, Cast y Carga STAGE]")
+      NB02("02_enriquecimiento_y_unificacion.ipynb<br>[Unión Dimensional y Estandarización]")
+      NB03("03_construccion_obt.ipynb<br>[Filtros Limpieza, Cálculo Métricas OBT]")
+      NB04("04_validaciones_y_exploracion.ipynb<br>[Data Quality, Nulls y Extremos]")
+      NB05("05_data_analysis.ipynb<br>[Respuestas de Negocio y Pushdowns]")
     end
 
-    subgraph Snowflake Cloud Data Warehouse
+    subgraph Snowflake Cloud
       subgraph Schema BASE_RAW
         STG_YEL[("YELLOW_TRIPS_RAW")]
         STG_GRN[("GREEN_TRIPS_RAW")]
       end
       
       subgraph Schema ANALYTICS 
+        TAXI[("TAXI_ZONES_LOOKUP")]
         ENRICHED[("TRIPS_ENRICHED_UNIFIED_STAGE")]
+        
         OBT[("OBT_TRIPS")]
       end
     end
 
-    %% Flujo 01
+    %% Extracción
     TLC_S3 -->|.parquet| NB01
+    
+    %% Ingesta
     NB01 -->|Idempotente INSERT| STG_YEL
     NB01 -->|Idempotente INSERT| STG_GRN
 
-    %% Flujo 02
-    STG_YEL -.->|Lectura Spark| NB02
-    STG_GRN -.->|Lectura Spark| NB02
-    TAXI_ZONES -.->|Lectura Spark| NB02
-    NB02 -->|Escritura Unificada| ENRICHED
+    %% Transformación y Enriquecimiento
+    STG_YEL -.->|lectura en caliente| NB02
+    STG_GRN -.->|lectura en caliente| NB02
+    TAXI_ZONES -.->|CSV| NB02
 
-    %% Flujo 03
-    ENRICHED -.->|Lectura SQL| NB03
-    NB03 -->|SQL Clean (Filtros)| OBT
+    NB02 --> |Dataframe Unificado| ENRICHED
+    NB02 -->|Dataframe Unificado| TAXI
 
-    %% Flujo 04 y 05
-    OBT -.->|Validación Masiva| NB04
-    OBT -.->|PySpark Pushdown| NB05
+    ENRICHED --> |Dataframe Unificado| NB03
+    TAXI --> |Dataframe Unificado| NB03
+
+    NB03 -->|SQL Clean | OBT
+
+    %% Exploración y Análisis Analítico
+    OBT -.->|Pushdown Stats| NB04
+    OBT -.->|Spark SQL Queries| NB05
+	TAXI_ZONES
 ```
 
 ---
